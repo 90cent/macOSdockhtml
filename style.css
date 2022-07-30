@@ -1,5 +1,115 @@
+:root {
+    --nav-item-size: 48px;
+    --nav-item-multiplier: 155%;
+
+    --nav-color: ;
+}
+
+@font-face {
+    font-family: "Linebeam";
+    src: url('assets/fonts/Linebeam.ttf');
+}
+
+@font-face {
+    font-family: "F25_Bank_Printer";
+    src: url('assets/fonts/F25_Bank_Printer.ttf');
+}
+
+* {
+    font-family: "F25_Bank_Printer";
+}
+
 body {
+    display: flex;
+
     margin: 0;
     border: 0;
     background-color: darkslategray;
+}
+
+.centerNavbar {
+    display: flex;
+    margin: 8px 20% 0% 20%;
+
+    justify-content: center;
+    align-content: center;
+
+    width: 100%;
+    height: 20%;
+
+    background-color: beige;
+    border-radius: 10px;
+
+    z-index: 3;
+}
+
+.centerNavbar ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+
+    justify-content: center;
+    align-content: center;
+
+    width: 100%;
+}
+
+.centerNavbar ul li {
+    display: inline-block;
+    list-style: none;
+    
+    margin-top: 4px;
+    margin-right: 12px;
+    margin-left: 12px;
+
+    padding: 0;
+}
+
+#navItem  {
+    width: var(--nav-item-size);
+    height: var(--nav-item-size);
+
+    transition: all 500ms;
+}
+
+#navItem :hover {
+    transform: scale(var(--nav-item-multiplier));
+    transform-origin: center top;
+
+    transition: all 500ms;
+}
+
+#navItem img {
+    width: var(--nav-item-size);
+    height: var(--nav-item-size);
+
+    transition: all 500ms;
+}
+
+.centerNavbar ul li span {
+    display: flex;
+    position: absolute;
+
+    align-self: center;
+    justify-self: center;
+
+    z-index: 3;
+}
+
+.centerNavbar ul li :not(:hover) + span {
+    opacity: 1000%;
+    margin-top: 0px;
+
+    transition: all 500ms;
+}
+
+.centerNavbar ul li :hover + span {
+    transform-origin: center top;
+
+    margin-top: 25px;
+    text-align: justify;
+
+    opacity: 100%;
+
+    transition: all 500ms;
 }
