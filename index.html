@@ -4,41 +4,102 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/assets/styles/dock.css">
+    <link rel="stylesheet" href="/assets/styles/mainContainer.css">
+
+    <script defer async>
+        var metamask;
+
+        if (typeof window.ethereum == 'undefined') {
+            alert("Metamask not found. Login is only working if you have metamask installed");
+        }
+        metamask = window.ethereum;
+
+        async function login() {
+            const accounts = await metamask.request({ method: 'eth_requestAccounts' });   
+            const request = new XMLHttpRequest();
+
+            request.onload = async () => {
+                const personalMessage = request.responseText;
+                try {
+                    const sign = await ethereum.request({
+                        method: 'personal_sign',
+                        params: [personalMessage, accounts[0]],
+                    });
+
+                    window.signed = sign;
+                } catch (error) {
+                    console.log(error.message);
+                    return
+                }
+            };
+        
+            request.open("GET",`http://127.0.0.1:6868/authmsg?wallet=${accounts[0]}`);
+            request.send();   
+            
+            waitForSigned();
+        }
+
+        function waitForSigned() {
+            if(window.signed === undefined) {
+                setTimeout(waitForSigned,500);
+                return;
+            }
+            console.log("window.signed is set: " + window.signed);
+        }
+   
+    </script>
 
     <title>90cent</title>
 </head>
 
 <body>
-    <div class="centerNavbar">
-        <ul>
-            <li>
-                <button id="navItem" onclick="location.href='https://github.com/90cent'">
-                    <img src="/assets/images/GitHub_icon.svg">
-                </button>
-                <span>GitHub Profile</span>
-            </li>
-            <li>
-                <button id="navItem" onclick=""> 
-                    <img src="/assets/images/GitHub_icon.svg">
-                </button>
-                <span>Cloudflare Access</span>
-            </li>
-            <li>
-                <button id="navItem" onclick="">
-                    <img src="/assets/images/GitHub_icon.svg">
-                </button>
-                <span>Pictochat</span>
-            </li>
-            <li>
-                <button id="navItem">
-                    <img src="/assets/images/GitHub_icon.svg">
-                </button>
-                <span>Upload File</span>
-            </li>
-        </ul>
+    <div class="dockContainer">
+        <div class="dock">
+            <ul>
+                <li>
+                    <button id="navItem" onclick="location.href='https://github.com/90cent'">
+                        <img src="/assets/images/GitHub_icon.svg">
+                    </button>
+                    <span>GitHub Profile</span>
+                </li>
+                <li>
+                    <button id="navItem" onclick=""> 
+                        <img src="/assets/images/GitHub_icon.svg">
+                    </button>
+                    <span>Cloudflare Access</span>
+                </li>
+                <li>
+                    <button id="navItem" onclick="">
+                        <img src="/assets/images/GitHub_icon.svg">
+                    </button>
+                    <span>Pictochat</span>
+                </li>
+                <li>
+                    <button id="navItem">
+                        <img src="/assets/images/GitHub_icon.svg">
+                    </button>
+                    <span>Upload File</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="mainContainer">
+        <div class="login">
+            <h2>v3ryfast services</h2>
+            <p id="loginStatus">Please login using Metamask to use v3ryfast services and tools</p>
+            <button id="loginButton" onclick="loginButton">Login</button>
+        </div>
     </div>
 
+    <script>
+        const loginButton = document.getElementById("loginButton");
+        loginButton.addEventListener("click", () => {
+            login();
+        })
+    </script>
 </body>
-
 </html>
