@@ -23,8 +23,7 @@ body {
     margin: 0;
     border: 0;
     background-color: beige;
-    
-
+    background-image: url("assets/images/pixelCity2.webp");
     z-index: 0;
 }
 
