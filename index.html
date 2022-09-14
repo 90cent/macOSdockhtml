@@ -9,64 +9,6 @@
     <link rel="stylesheet" href="/assets/styles/dock.css">
     <link rel="stylesheet" href="/assets/styles/mainContainer.css">
 
-    <script defer async>
-        var metamask;
-
-        if (typeof window.ethereum == 'undefined') {
-            alert("Metamask not found. Login is only working if you have metamask installed");
-        }
-        metamask = window.ethereum;
-
-        async function login() {
-            const accounts = await metamask.request({ method: 'eth_requestAccounts' });   
-            const request = new XMLHttpRequest();
-
-            request.onload = () => {
-                const personalMessage = request.responseText;
-                console.log(personalMessage);
-                setTimeout(async () => {
-                    try {
-                        const sign = await ethereum.request({
-                            method: 'personal_sign',
-                            params: [personalMessage, accounts[0]],
-                        });
-
-                        window.signed = sign;
-                    } catch (error) {
-                        console.log(error.message);
-                        return
-                    }
-                },1000);
-            };
-        
-            request.open("GET",`http://127.0.0.1:6868/authmsg?wallet=${accounts[0]}`);
-            request.send();   
-
-            waitForSigned();
-
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST","http://127.0.0.1:6868/login");
-            xhr.onreadystatechange = () => {
-                if(request.readyState == request.DONE) {
-                    console.log("done");
-                }
-            }
-
-            xhr.send({
-                "wallet": "0xsdsd",
-                "sign": "ddd"
-            });
-        }
-
-        function waitForSigned() {
-            if(window.signed === undefined) {
-                setTimeout(waitForSigned,500);
-                return;
-            }
-            console.log("window.signed is set: " + window.signed);
-        }
-   
-    </script>
 
     <title>90cent</title>
 </head>
@@ -110,12 +52,5 @@
             <button id="loginButton" onclick="loginButton">Login</button>
         </div>
     </div>
-
-    <script>
-        const loginButton = document.getElementById("loginButton");
-        loginButton.addEventListener("click", () => {
-            login();
-        })
-    </script>
 </body>
 </html>
